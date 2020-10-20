@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: person
+spec:
+  selector:
+    matchLabels:
+      app: person
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: person
+    spec:
+      containers:
+        - name: person
+          image: person:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7000
+          resources:
+            limits:
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: person
+spec:
+  selector:
+    app: person
+  ports:
+    - name: http
+      port: 80
+      targetPort: 7000
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: person
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: person
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
