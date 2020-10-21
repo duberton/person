@@ -4,7 +4,7 @@ import com.duberton.adapter.input.web.api.PersonApi
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 
-class PhoneRoute(private val personApi: PersonApi) {
+class PersonRoute(private val personApi: PersonApi) {
 
     fun handlers(app: Javalin) {
         app.routes {

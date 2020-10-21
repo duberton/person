@@ -1,6 +1,6 @@
 package com.duberton
 
-import com.duberton.adapter.input.web.PhoneRoute
+import com.duberton.adapter.input.web.PersonRoute
 import com.duberton.adapter.input.web.config.apiConfig
 import com.duberton.adapter.output.mongodb.config.mongoConfig
 import io.javalin.Javalin
@@ -11,7 +11,7 @@ import org.koin.standalone.inject
 
 class App : KoinComponent {
 
-    private val phoneRoute: PhoneRoute by inject()
+    private val personRoute: PersonRoute by inject()
 
     fun bootstrap() {
         val app = Javalin.create().start()
@@ -21,7 +21,7 @@ class App : KoinComponent {
                 useKoinPropertiesFile = true
             )
         )
-        phoneRoute.handlers(app)
+        personRoute.handlers(app)
     }
 }
 

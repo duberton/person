@@ -1,14 +1,14 @@
 package com.duberton.adapter.output.mongodb.config
 
-import com.duberton.adapter.output.mongodb.PhoneRepository
-import com.duberton.application.port.PhoneRepositoryPort
+import com.duberton.adapter.output.mongodb.PersonRepository
+import com.duberton.application.port.PersonRepositoryPort
 import com.mongodb.ConnectionString
 import com.mongodb.client.MongoDatabase
 import org.koin.dsl.module.module
 import org.litote.kmongo.KMongo
 
 val mongoConfig = module {
-    single { PhoneRepository(get()) } bind PhoneRepositoryPort::class
+    single { PersonRepository(get()) } bind PersonRepositoryPort::class
     single { mongoDatabase(getProperty("mongodb.connection.string")) }
 }
 

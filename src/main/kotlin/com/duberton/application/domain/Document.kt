@@ -1,6 +1,6 @@
 package com.duberton.application.domain
 
-import com.duberton.application.port.PhoneRepositoryPort
+import com.duberton.application.port.PersonRepositoryPort
 import com.duberton.common.exception.BusinessException
 import com.duberton.common.validation.throwIf
 
@@ -8,8 +8,8 @@ data class Document(
     val number: String
 ) {
 
-    fun isDocumentOwnedByAnotherPerson(phoneRepositoryPort: PhoneRepositoryPort, name: String) {
-        val isNotUnique = phoneRepositoryPort.findByName(number, name).count() > 0
+    fun isDocumentOwnedByAnotherPerson(personRepositoryPort: PersonRepositoryPort, name: String) {
+        val isNotUnique = personRepositoryPort.findByDocumentNumber(number).count() > 0
         throwIf(isNotUnique) {
             BusinessException(
                 Person::class.java.simpleName,

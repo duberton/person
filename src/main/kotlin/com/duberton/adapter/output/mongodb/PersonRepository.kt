@@ -4,29 +4,22 @@ import com.duberton.adapter.output.mongodb.entity.PersonEntity
 import com.duberton.adapter.output.mongodb.extension.toDomain
 import com.duberton.adapter.output.mongodb.extension.toEntity
 import com.duberton.application.domain.Person
-import com.duberton.application.port.PhoneRepositoryPort
+import com.duberton.application.port.PersonRepositoryPort
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.litote.kmongo.findOneById
 import org.litote.kmongo.getCollection
 
-class PhoneRepository(private val mongoDatabase: MongoDatabase) : PhoneRepositoryPort {
+class PersonRepository(private val mongoDatabase: MongoDatabase) : PersonRepositoryPort {
 
     private fun personCollection() = mongoDatabase.getCollection<PersonEntity>("person")
 
     override fun findById(id: String) = personCollection().findOneById(id)?.toDomain()
 
-    override fun findFromDocument(accountId: String): List<Person> {
+    override fun findByDocumentNumber(documentNumber: String): List<Person> {
         return personCollection()
-            .find(eq("account.accountId", accountId))
-            .toList()
-            .map { it.toDomain() }
-    }
-
-    override fun findByName(accountId: String, name: String): List<Person> {
-        return personCollection()
-            .find(and(eq("account.accountId", accountId), eq("name", name)))
+            .find(and(eq("document.number", documentNumber)))
             .toList()
             .map { it.toDomain() }
     }

@@ -1,6 +1,6 @@
 package com.duberton.application.domain
 
-import com.duberton.application.port.PhoneRepositoryPort
+import com.duberton.application.port.PersonRepositoryPort
 
 data class Person(
     val name: String,
@@ -14,11 +14,11 @@ data class Person(
         JURIDICAL
     }
 
-    fun validate(phoneRepositoryPort: PhoneRepositoryPort) {
-        document.isDocumentOwnedByAnotherPerson(phoneRepositoryPort, name)
+    fun validate(personRepositoryPort: PersonRepositoryPort) {
+        document.isDocumentOwnedByAnotherPerson(personRepositoryPort, name)
     }
 
-    fun save(phoneRepositoryPort: PhoneRepositoryPort) {
-        phoneRepositoryPort.save(this)
+    fun save(personRepositoryPort: PersonRepositoryPort) {
+        personRepositoryPort.save(this)
     }
 }
