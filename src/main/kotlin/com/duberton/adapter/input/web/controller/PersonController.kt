@@ -4,14 +4,14 @@ import com.duberton.adapter.input.web.api.PersonApi
 import com.duberton.adapter.input.web.api.request.PersonRequest
 import com.duberton.adapter.input.web.extension.toDomain
 import com.duberton.adapter.input.web.extension.toResponse
-import com.duberton.application.usecase.CreatePersonUseCase
-import com.duberton.application.usecase.FindPersonUseCase
+import com.duberton.application.port.CreatePersonPort
+import com.duberton.application.port.FindPersonPort
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 
 class PersonController(
-    private val createPersonUseCase: CreatePersonUseCase,
-    private val findPersonUseCase: FindPersonUseCase
+    private val createPersonPort: CreatePersonPort,
+    private val findPersonPort: FindPersonPort
 ) : PersonApi {
 
     override fun create(ctx: Context) {
@@ -19,13 +19,13 @@ class PersonController(
             .check({ it.name.isNotBlank() })
             .check({ it.type.isNotBlank() })
             .check({ it.document.number.isNotBlank() }).get()
-        val person = createPersonUseCase.create(personRequest.toDomain())
+        val person = createPersonPort.create(personRequest.toDomain())
         ctx.json(person.toResponse())
     }
 
     override fun findById(ctx: Context) {
         val id = ctx.pathParam("id")
-        val person = findPersonUseCase.findPersonById(id) ?: throw NotFoundResponse(id)
+        val person = findPersonPort.findPersonById(id) ?: throw NotFoundResponse(id)
         ctx.json(person.toResponse())
     }
 }
