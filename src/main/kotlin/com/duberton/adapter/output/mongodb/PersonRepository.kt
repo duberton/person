@@ -6,7 +6,6 @@ import com.duberton.adapter.output.mongodb.extension.toEntity
 import com.duberton.application.domain.Person
 import com.duberton.application.port.PersonRepositoryPort
 import com.mongodb.client.MongoDatabase
-import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import org.litote.kmongo.findOneById
 import org.litote.kmongo.getCollection
@@ -19,7 +18,7 @@ class PersonRepository(private val mongoDatabase: MongoDatabase) : PersonReposit
 
     override fun findByDocumentNumber(documentNumber: String): List<Person> {
         return personCollection()
-            .find(and(eq("document.number", documentNumber)))
+            .find(eq("document.number", documentNumber))
             .toList()
             .map { it.toDomain() }
     }
